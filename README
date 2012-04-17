@@ -1,0 +1,56 @@
+Maxmind minFraud Java API Version 1.45
+
+================
+Example programs
+
+See Example.java for an example of how to use this API with minFraud service.
+See Telv_Example.java for an example of how to use this API with the Telephone Verification service.
+See Locv_Example.java for an example of how to use this API with the Location Verification service.
+
+=================
+API Documentation for minFraud service
+
+ccfs = new CreditCardFraudDetection(boolean s);
+  This creates a new CreditCardFraudDetection object
+  and set isSecure to s
+  if isSecure is false then it uses regular HTTP.
+  if isSecure is true then it uses secure HTTPS.
+
+ccfs.input(HashMap h);
+  Takes a Hashmap and uses it as input for the server
+  See http://www.maxmind.com/app/ccv for details on input fields.
+
+ccfs.query();
+  Queries the server with the fields passed to the input method
+  and stores the output.
+
+HashMap h = ccfs.output();
+  Returns the HashMap containing the output from the server.
+  See http://www.maxmind.com/app/ccv for details on output fields.
+
+=====
+Notes
+The Java API requires the Commons HttpClient package and Commons Logging package.
+For more details see http://jakarta.apache.org/commons/httpclient/
+
+For your convenience the required JAR files from the Commons packages are included in this distribution.
+
+To compile the example program for minFraud, run:
+javac -classpath "./commons-httpclient-2.0.jar" com/maxmind/ws/CreditCardFraudDetection.java com/maxmind/ws/HTTPBase.java
+javac -classpath ".:./commons-httpclient-2.0.jar" Example.java
+
+to run it use
+java -classpath ".:./commons-httpclient-2.0.jar:./commons-logging-api.jar:./commons-logging.jar" Example
+
+To compile the example program for Telephone Verification, run:
+javac -classpath "./commons-httpclient-2.0.jar" com/maxmind/ws/TelephoneVerification.java com/maxmind/ws/HTTPBase.java
+javac -classpath ".:./commons-httpclient-2.0.jar" Telv_Example.java
+
+to run it use
+java -classpath ".:./commons-httpclient-2.0.jar:./commons-logging-api.jar:./commons-logging.jar" Telv_Example
+
+===============================
+Copyright (c) 2007, MaxMind LLC
+
+All rights reserved.  This package is licensed under the LGPL.  For details see
+the COPYING file.

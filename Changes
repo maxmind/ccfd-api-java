@@ -1,0 +1,38 @@
+Revision history for MaxMind minFraud Java API
+
+1.46 October 4th 2007
+	- Replaced www.maxmind.com and www2.maxmind.com with minfraud1.maxmind.com and minfraud2.maxmind.com
+
+1.45 July 23rd 2007
+	- Changed license from GPL to LGPL, to allow commercial programs to include minFraud API
+
+1.44 October 9th 2006
+	- Fixed problem with encoding input fields, since now use POST instead of GET
+
+1.43 October 3rd 2006
+	- Added support for new input fields, usernameMD5 and passwordMD5
+
+1.4  August 8th 2005
+	- Added support for Telephone Verification
+	- Use POST method instead of GET method, fixes bug where query string
+		was truncated
+	- Added support for bypassing DNS using IP addresses
+	- Added shipCity shipRegion shipPostal shipCountry to list of input fields
+
+1.3  February 9th 2005
+	- Added requested_type, forwardedIP, emailMD5, shipAddr,
+		txnID, sessionID to list of input fields
+	- Added LocationVerification.java
+
+1.2  July 2nd 2004
+	- Added binName, binPhone, custPhone to list of input fields
+
+1.1  June 14th 2004
+	- use org.apache.commons.httpclient instead of Java's built in HTTP client
+		since Apache HTTP client has better support for timeouts
+	- Replaced h1 and h2 servers with www and www2 (all ending with maxmind.com)
+	- Added debug and timeout options
+	- Failover if score field not set
+
+1.0  May 5st 2004
+	- original version
