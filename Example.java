@@ -57,6 +57,9 @@ class Example {
     h.put("txnID","1234");
     h.put("sessionID","abcd9876");
 
+    h.put("user_agent", "Mozilla/4.0");
+    h.put("accept_language", "de-de");
+
     ccfs.input(h);
     ccfs.query();
     h = ccfs.output();
