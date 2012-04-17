@@ -40,7 +40,7 @@ public class HTTPBase{
     public boolean isSecure = true;
     public float timeout = 10; // default timeout is 10 seconds
     public boolean debug = false;
-    public String check_field = "score";
+    public String check_field = "countryMatch";
     public boolean useDNS = false;
     public long wsIpaddrRefreshTimeout = 18000;
     private static Pattern ippattern =  Pattern.compile("(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3};)*\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
@@ -266,7 +266,7 @@ public class HTTPBase{
 	    query_data[n] = new NameValuePair(key,value);
 	    n++;
 	}
-	query_data[n] = new NameValuePair("clientAPI","Java/1.49");
+	query_data[n] = new NameValuePair("clientAPI","Java/1.50");
 	// scheme already has the name of the proctol
 	// append the domain name of the server, url of the web service
 	// and the query string to the string named url2

@@ -1,4 +1,7 @@
 Revision history for MaxMind minFraud Java API
+1.50 Mar 13th 2012
+        - Check countryMatch instead of score for successful results. Score is
+          only avail for minfraud_version 1.3 ( Boris Zentner )
 1.49 Februar 19th 2009
 	- Add minfraud3.maxmind.com to the serverlist
 1.48 October 3th 2008

@@ -41,7 +41,7 @@ public class CreditCardFraudDetection extends HTTPBase {
   }
   public CreditCardFraudDetection(boolean s) {
     url = "app/ccv2r";
-    check_field = "score";
+    check_field = "countryMatch";
     allowed_fields = new HashMap();
     for (int i = 0; i < allowedfields.length; i++) {
       allowed_fields.put(allowedfields[i],new Integer(1));
