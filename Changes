@@ -1,4 +1,6 @@
 Revision history for MaxMind minFraud Java API
+1.49 Februar 19th 2009
+	- Add minfraud3.maxmind.com to the serverlist
 1.48 October 3th 2008
 	- Add new fields user_agent and accept_language for CCFD ( Boris Zentner )
 

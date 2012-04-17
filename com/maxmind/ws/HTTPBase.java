@@ -31,8 +31,8 @@ import org.apache.commons.httpclient.methods.*;
 //import HttpTimeoutHandler;
 
 public class HTTPBase{
-    int numservers = 2;
-    static String[] server = {"minfraud1.maxmind.com","minfraud2.maxmind.com"};
+    int numservers = 3;
+    static String[] server = {"minfraud3.maxmind.com", "minfraud1.maxmind.com","minfraud2.maxmind.com"};
     String url;
     public HashMap queries;
     public HashMap allowed_fields;
@@ -266,7 +266,7 @@ public class HTTPBase{
 	    query_data[n] = new NameValuePair(key,value);
 	    n++;
 	}
-	query_data[n] = new NameValuePair("clientAPI","Java/1.48");
+	query_data[n] = new NameValuePair("clientAPI","Java/1.49");
 	// scheme already has the name of the proctol
 	// append the domain name of the server, url of the web service
 	// and the query string to the string named url2
