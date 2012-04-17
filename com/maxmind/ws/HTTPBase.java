@@ -31,8 +31,8 @@ import org.apache.commons.httpclient.methods.*;
 //import HttpTimeoutHandler;
 
 public class HTTPBase{
-    int numservers = 2;
-    static String[] server = {"api-us-east.maxmind.com", "api-us-west.maxmind.com"};
+    int numservers = 3;
+    static String[] server = {"minfraud.maxmind.com", "minfraud-us-east.maxmind.com", "minfraud-us-west.maxmind.com"};
     String url;
     public HashMap queries;
     public HashMap allowed_fields;
