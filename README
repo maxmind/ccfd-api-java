@@ -5,7 +5,6 @@ Example programs
 
 See Example.java for an example of how to use this API with minFraud service.
 See Telv_Example.java for an example of how to use this API with the Telephone Verification service.
-See Locv_Example.java for an example of how to use this API with the Location Verification service.
 
 =================
 API Documentation for minFraud service
