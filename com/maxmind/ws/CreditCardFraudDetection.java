@@ -28,11 +28,12 @@ public class CreditCardFraudDetection extends HTTPBase {
     static String[] allowedfields = {"i","domain", "city", "region", "postal", "country", "bin", "binName",
 				"binPhone", "custPhone", "license_key", "requested_type", "forwardedIP", "emailMD5",
 				"shipAddr", "shipCity", "shipRegion", "shipPostal", "shipCountry", "txnID", "sessionID",
-				"usernameMD5", "passwordMD5", "user_agent", "accept_language"};
+				"usernameMD5", "passwordMD5", "user_agent", "accept_language", "avs_result",
+				"cvv_result", "order_amount", "order_currency", "shopID", "txn_type" };
     char[] hexchar = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
   public CreditCardFraudDetection() {
     url = "app/ccv2r";
-    check_field = "score";
+    check_field = "countryMatch";
     allowed_fields = new HashMap();
     for (int i = 0; i < allowedfields.length; i++) {
       allowed_fields.put(allowedfields[i], new Integer(1));
