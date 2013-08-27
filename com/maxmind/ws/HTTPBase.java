@@ -41,9 +41,11 @@ public class HTTPBase{
     public float timeout = 10; // default timeout is 10 seconds
     public boolean debug = false;
     public String check_field = "countryMatch";
-    public boolean useDNS = false;
+
+    // We keep the variables useDNS, wsIpaddrRefreshTimeout and wsIpaddrCacheFile
+    // for backward compatibility, __but we do not use them__
+    public boolean useDNS = true;
     public long wsIpaddrRefreshTimeout = 18000;
-    private static Pattern ippattern =  Pattern.compile("(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3};)*\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
     public String wsIpaddrCacheFile = "/tmp/maxmind.ws.cache";
     HTTPBase() {
         queries = new HashMap();
@@ -77,27 +79,6 @@ public class HTTPBase{
 	    System.out.println("number of servers = " + numservers); 
 	}
 	
-	if (this.useDNS == false) {
-            // query every server using its ip address
-            // if there was success reading the ip addresses
-            // from the web or the cache file
-	    String ipstr = readIpAddressFromCache();
-	    if (debug) {
-	        System.out.println("using ip addresses, ipstr is " + ipstr);
-	    }
-	    StringTokenizer st = new StringTokenizer(ipstr, ";");
-	    while (st.hasMoreTokens()) {
-		String ipstr2 = st.nextToken();
-	        boolean result = this.querySingleServer(ipstr2);
-	        if (debug) {
-		    System.out.println("ip address " + ipstr2 + ", result = " + result); 
-	        }
-	        if (result == true) {
-		    return result;
-	        }
-	    }
-	}
-
         // query every server using its domain name
     	for (int i = 0; i < numservers; i++) {
 	    boolean result = this.querySingleServer(server[i]);
@@ -134,111 +115,6 @@ public class HTTPBase{
     // returns the output from the server
     public HashMap output() {
 	return outputstr;
-    }
-
-    // write the IP addresses and the timestamp to
-    // the cache file
-    void writeIpAddressToCache(String filename,String ipstr) {
-        try {
-	    BufferedWriter f = new BufferedWriter(new FileWriter(filename,false));
-	    f.write(ipstr);
-	    long datetime = System.currentTimeMillis() / 1000;
-	    f.write(Long.toString(datetime));
-            f.newLine();
-	    f.close();
-	    if (debug) {
-	        System.out.println("writing ip address to cache\n");
-	        System.out.println("ip str: " + ipstr);
-	        System.out.println("date time: " + datetime);
-	    }
-	} catch (Exception e) {
-	    if (debug) {
-	        System.out.println(e.getMessage());
-	        e.printStackTrace();
-	    }
-        }
-       
-    }
-
-    String readIpAddressFromCache(){
-        String ipstr = null;
-        long datetime = 0;
-        long time = 0;
-        // if the cache file exists (it throws a exception if it does not exist) then
-        // read the ip addresses and the time
-        // they were cache
-	try {
-	    BufferedReader f = new BufferedReader(new FileReader(this.wsIpaddrCacheFile));
-            ipstr = f.readLine();
-            datetime = Long.valueOf(f.readLine()).longValue();
-            time = System.currentTimeMillis() / 1000;
-            f.close();
-	} catch (Exception e) {
-	    if (debug) {
-	        System.out.println(e.getMessage());
-	        e.printStackTrace();
-	    }
-	}
-	// if the ip addresses expired or don't exist then
-	// get them from the web and write 
-	// them to the cache file
-	if (((time - datetime) > this.wsIpaddrRefreshTimeout) | (ipstr == null)) {
-	    String tryIpstr = readIpAddressFromWeb();
-	    if (tryIpstr.length() > 0) {
-	        ipstr = tryIpstr;
-	    } else {
-		if (debug) {
-		    System.out.println("Warning, unable to get ws_ipaddr from www.maxmind.com\n");
-		}
-	    }
-	    // we write to cache whether or not we were able to get tryIpStr, since
-	    // in case DNS goes down, we don't want to check app/ws_ipaddr over and over
-	    writeIpAddressToCache(this.wsIpaddrCacheFile,ipstr);
-        }
-        if (debug) {
-	    System.out.println("reading ip address from cache\n");
-	    System.out.println("ip str: " + ipstr);
-	    System.out.println("date time: " + datetime);
-	    System.out.println("time: " + time);
-	}
-
-	// return the ip addresses
-        ipstr = ipstr.trim();
-	Matcher m = ippattern.matcher(ipstr);
-        boolean b = m.matches();
-
-	if (b == true) {
-	    return ipstr;
-        }
-	return null;
-    }
-
-    // get the ip addresses from app/ws_ipaddr
-    String readIpAddressFromWeb() {
-	String url2 = "http://www.maxmind.com/app/ws_ipaddr";
-	try {
-	    org.apache.commons.httpclient.HttpClient client = new HttpClient();
-	    client.setConnectionTimeout((int)timeout*1000);
-	    client.setTimeout((int)timeout*1000);
-
-	    // connect to the server
-	    org.apache.commons.httpclient.HttpMethod method = new GetMethod(url2);
-	    int r = client.executeMethod(method);
-	    String content = method.getResponseBodyAsString();
-
-	    if (method.getStatusCode() == 200) {
-		if (debug) {
-		    System.out.println("content = " + content);
-		}
-                return content;
-	    }
-	} catch (Exception e) {
-	    if (debug) {
-	        System.out.println(e.getMessage());
-	        e.printStackTrace();
-	    }
-	}
-	return null;
     }
 
     // queries a single server
