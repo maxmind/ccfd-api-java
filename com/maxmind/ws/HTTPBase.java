@@ -142,7 +142,7 @@ public class HTTPBase{
 	    query_data[n] = new NameValuePair(key,value);
 	    n++;
 	}
-	query_data[n] = new NameValuePair("clientAPI","Java/1.52");
+	query_data[n] = new NameValuePair("clientAPI","Java/1.53");
 	// scheme already has the name of the proctol
 	// append the domain name of the server, url of the web service
 	// and the query string to the string named url2

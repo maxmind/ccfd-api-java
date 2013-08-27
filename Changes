@@ -1,4 +1,6 @@
 Revision history for MaxMind minFraud Java API
+1.53 Aug 27th 2013
+        - Remove custom DNS cache ( Boris Zentner )
 1.52 Aug 9th 2012
     - Check for the countryMatch field (not score) to see if a request
       returned valid data. The score field is deprecated. (Boris Zentner)
