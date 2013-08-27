@@ -10,9 +10,6 @@ class Example {
 
 //  uncomment to turn debugging on
     ccfs.debug = true;
-    ccfs.wsIpaddrRefreshTimeout = 3600 * 5;
-    ccfs.wsIpaddrCacheFile = "/tmp/maxmind.ws.cache";
-    ccfs.useDNS = false;
 
 //  Set timeout to ten seconds
     ccfs.setTimeout(10);
