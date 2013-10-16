@@ -20,56 +20,60 @@
 
 package com.maxmind.ws;
 
-import java.util.*;
-import java.util.regex.*;
-import java.security.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 public class CreditCardFraudDetection extends HTTPBase {
-    static String[] allowedfields = {"i","domain", "city", "region", "postal", "country", "bin", "binName",
-				"binPhone", "custPhone", "license_key", "requested_type", "forwardedIP", "emailMD5",
-				"shipAddr", "shipCity", "shipRegion", "shipPostal", "shipCountry", "txnID", "sessionID",
-				"usernameMD5", "passwordMD5", "user_agent", "accept_language", "avs_result",
-				"cvv_result", "order_amount", "order_currency", "shopID", "txn_type" };
-    char[] hexchar = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
-  public CreditCardFraudDetection() {
-    url = "app/ccv2r";
-    check_field = "countryMatch";
-    allowed_fields = new HashMap();
-    for (int i = 0; i < allowedfields.length; i++) {
-      allowed_fields.put(allowedfields[i], new Integer(1));
-    }
-    setIsSecure(true);
-  }
-  public CreditCardFraudDetection(boolean s) {
-    url = "app/ccv2r";
-    check_field = "countryMatch";
-    allowed_fields = new HashMap();
-    for (int i = 0; i < allowedfields.length; i++) {
-      allowed_fields.put(allowedfields[i],new Integer(1));
-    }
-    setIsSecure(s);
-  }
+    static String[] allowedfields = { "i", "domain", "city", "region",
+            "postal", "country", "bin", "binName", "binPhone", "custPhone",
+            "license_key", "requested_type", "forwardedIP", "emailMD5",
+            "shipAddr", "shipCity", "shipRegion", "shipPostal", "shipCountry",
+            "txnID", "sessionID", "usernameMD5", "passwordMD5", "user_agent",
+            "accept_language", "avs_result", "cvv_result", "order_amount",
+            "order_currency", "shopID", "txn_type" };
+    char[] hexchar = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a',
+            'b', 'c', 'd', 'e', 'f' };
 
-  protected String filter_field(String key,String value) {
-    if (
-	(key.equals("emailMD5") && value.indexOf('@') != -1)
-		||
-	((key.equals("usernameMD5") || key.equals("passwordMD5")) && value.length() != 32)
-      ) {
-      try {
-	MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(value.toLowerCase().getBytes());
-        byte[] b = md.digest();
-        StringBuffer md5str = new StringBuffer();
-	for (int i = 0;i < b.length;i++) {
-	  md5str.append(hexchar[(b[i] & 0xff) >> 4]);
-	  md5str.append(hexchar[b[i] & 15]);
-	}
-        return md5str.toString();
-      } catch (NoSuchAlgorithmException e) {
-	System.out.println("algorithm not support\n");
-      }
+    public CreditCardFraudDetection() {
+        url = "app/ccv2r";
+        check_field = "countryMatch";
+        allowed_fields = new HashMap();
+        for (final String allowedfield : allowedfields) {
+            allowed_fields.put(allowedfield, new Integer(1));
+        }
+        setIsSecure(true);
     }
-    return value;
-  }
+
+    public CreditCardFraudDetection(boolean s) {
+        url = "app/ccv2r";
+        check_field = "countryMatch";
+        allowed_fields = new HashMap();
+        for (final String allowedfield : allowedfields) {
+            allowed_fields.put(allowedfield, new Integer(1));
+        }
+        setIsSecure(s);
+    }
+
+    @Override
+    protected String filter_field(String key, String value) {
+        if ((key.equals("emailMD5") && value.indexOf('@') != -1)
+                || ((key.equals("usernameMD5") || key.equals("passwordMD5")) && value
+                        .length() != 32)) {
+            try {
+                final MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(value.toLowerCase().getBytes());
+                final byte[] b = md.digest();
+                final StringBuffer md5str = new StringBuffer();
+                for (final byte element : b) {
+                    md5str.append(hexchar[(element & 0xff) >> 4]);
+                    md5str.append(hexchar[element & 15]);
+                }
+                return md5str.toString();
+            } catch (final NoSuchAlgorithmException e) {
+                System.out.println("algorithm not support\n");
+            }
+        }
+        return value;
+    }
 }

@@ -18,31 +18,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
 package com.maxmind.ws;
 
-import java.util.*;
-import java.util.regex.*;
-import java.security.*;
+import java.util.HashMap;
 
 public class TelephoneVerification extends HTTPBase {
-    static String[] allowedfields = {"l","phone","verify_code"};
-      public TelephoneVerification() {
-            url = "app/telephone_http";
-	    check_field = "refid";
-	    allowed_fields = new HashMap();
-            for (int i = 0; i < allowedfields.length; i++) {
-                 allowed_fields.put(allowedfields[i], new Integer(1));
-            } 
-            setIsSecure(true);
-      }
-      public TelephoneVerification(boolean s) {
-            url = "app/telephone_http";
-	    check_field = "refid";
-	    allowed_fields = new HashMap();
-            for (int i = 0; i < allowedfields.length; i++) {
-                 allowed_fields.put(allowedfields[i], new Integer(1));
-            } 
-            setIsSecure(s);
-      }
+    static String[] allowedfields = { "l", "phone", "verify_code" };
+
+    public TelephoneVerification() {
+        url = "app/telephone_http";
+        check_field = "refid";
+        allowed_fields = new HashMap();
+        for (final String allowedfield : allowedfields) {
+            allowed_fields.put(allowedfield, new Integer(1));
+        }
+        setIsSecure(true);
+    }
+
+    public TelephoneVerification(boolean s) {
+        url = "app/telephone_http";
+        check_field = "refid";
+        allowed_fields = new HashMap();
+        for (final String allowedfield : allowedfields) {
+            allowed_fields.put(allowedfield, new Integer(1));
+        }
+        setIsSecure(s);
+    }
 }
