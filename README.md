@@ -1,5 +1,21 @@
 # Maxmind minFraud Java API
 
+## Installation ##
+
+We recommend installing this package with [Maven](http://maven.apache.org/).
+To do this, add the dependency to your pom.xml:
+
+```xml
+    <dependency>
+        <groupId>com.maxmind.ws</groupId>
+        <artifactId>minfraud-api</artifactId>
+        <version>1.60-SNAPSHOT</version>
+    </dependency>
+```
+
+If you install by hand, you will need [Apache
+HttpComponents](http://hc.apache.org/).
+
 ## Example programs
 
 * sample/Example.java - how to use the API with minFraud service.
@@ -36,11 +52,6 @@ HashMap h = ccfs.output();
 
 Returns the HashMap containing the output from the server. See
 http://dev.maxmind.com/minfraud for details on output fields.
-
-## Notes
-
-The Java API requires the Commons HttpClient package and Commons Logging
-package. For more details, see http://jakarta.apache.org/commons/httpclient/
 
 ## Copyright and License
 

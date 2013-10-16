@@ -140,8 +140,8 @@ public class HTTPBase {
         // check if we using the Secure HTTPS protocol
         scheme = isSecure ? "https://" : "http://";
 
-        ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
-        for (Map.Entry<String, String> entry : queries.entrySet()) {
+        final ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
+        for (final Map.Entry<String, String> entry : queries.entrySet()) {
             parameters.add(new BasicNameValuePair(entry.getKey(), entry
                     .getValue()));
         }
