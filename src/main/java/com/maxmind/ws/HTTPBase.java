@@ -26,7 +26,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import sun.net.www.http.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.params.HttpClientParams;
+import org.apache.commons.httpclient.params.HttpConnectionParams;
 
 //import HttpTimeoutHandler;
 
@@ -159,9 +163,10 @@ public class HTTPBase {
             System.out.println("url2 = " + url2);
         }
         try {
-            final org.apache.commons.httpclient.HttpClient client = new HttpClient();
-            client.setConnectionTimeout((int) timeout * 1000);
-            client.setTimeout((int) timeout * 1000);
+            final HttpClient client = new HttpClient();
+            HttpConnectionParams connectionParams = client.getHttpConnectionManager().getParams();
+            connectionParams.setConnectionTimeout((int) timeout * 1000);
+            connectionParams.setSoTimeout((int) timeout * 1000);
 
             // connect the server
             final org.apache.commons.httpclient.methods.PostMethod method = new PostMethod(
