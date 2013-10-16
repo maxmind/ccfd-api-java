@@ -3,7 +3,7 @@
 ## 1.60 (2013-10-16)
 
 * Updated code to use generics (Java 1.5+ required).
-* Upgraded to Jakarta Commons HttpClient 3.1.
+* Updated code to use to Apache HttpComponents 4.x.
 * Cleaned up the source tree and code.
 * First Maven release.
 
