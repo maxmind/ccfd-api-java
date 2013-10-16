@@ -28,7 +28,7 @@ public class TelephoneVerification extends HTTPBase {
     public TelephoneVerification() {
         url = "app/telephone_http";
         check_field = "refid";
-        allowed_fields = new HashMap();
+        allowed_fields = new HashMap<String, Integer>();
         for (final String allowedfield : allowedfields) {
             allowed_fields.put(allowedfield, new Integer(1));
         }
@@ -38,7 +38,7 @@ public class TelephoneVerification extends HTTPBase {
     public TelephoneVerification(boolean s) {
         url = "app/telephone_http";
         check_field = "refid";
-        allowed_fields = new HashMap();
+        allowed_fields = new HashMap<String, Integer>();
         for (final String allowedfield : allowedfields) {
             allowed_fields.put(allowedfield, new Integer(1));
         }

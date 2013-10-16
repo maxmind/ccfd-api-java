@@ -38,7 +38,7 @@ public class CreditCardFraudDetection extends HTTPBase {
     public CreditCardFraudDetection() {
         url = "app/ccv2r";
         check_field = "countryMatch";
-        allowed_fields = new HashMap();
+        allowed_fields = new HashMap<String, Integer>();
         for (final String allowedfield : allowedfields) {
             allowed_fields.put(allowedfield, new Integer(1));
         }
@@ -48,7 +48,7 @@ public class CreditCardFraudDetection extends HTTPBase {
     public CreditCardFraudDetection(boolean s) {
         url = "app/ccv2r";
         check_field = "countryMatch";
-        allowed_fields = new HashMap();
+        allowed_fields = new HashMap<String, Integer>();
         for (final String allowedfield : allowedfields) {
             allowed_fields.put(allowedfield, new Integer(1));
         }

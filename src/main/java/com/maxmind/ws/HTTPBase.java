@@ -29,7 +29,6 @@ import java.util.StringTokenizer;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 
 //import HttpTimeoutHandler;
@@ -39,9 +38,9 @@ public class HTTPBase {
     static String[] server = { "minfraud.maxmind.com",
             "minfraud-us-east.maxmind.com", "minfraud-us-west.maxmind.com" };
     String url;
-    public HashMap queries;
-    public HashMap allowed_fields;
-    public HashMap outputstr;
+    public HashMap<String, String> queries;
+    public HashMap<String, Integer> allowed_fields;
+    public HashMap<String, String> outputstr;
     public boolean isSecure = true;
     public float timeout = 10; // default timeout is 10 seconds
     public boolean debug = false;
@@ -55,16 +54,16 @@ public class HTTPBase {
     public String wsIpaddrCacheFile = "/tmp/maxmind.ws.cache";
 
     HTTPBase() {
-        queries = new HashMap();
-        allowed_fields = new HashMap();
-        outputstr = new HashMap();
+        queries = new HashMap<String, String>();
+        allowed_fields = new HashMap<String, Integer>();
+        outputstr = new HashMap<String, String>();
         isSecure = true;
     }
 
     HTTPBase(boolean s) {
-        queries = new HashMap();
-        allowed_fields = new HashMap();
-        outputstr = new HashMap();
+        queries = new HashMap<String, String>();
+        allowed_fields = new HashMap<String, Integer>();
+        outputstr = new HashMap<String, String>();
         isSecure = s;
     }
 
@@ -105,9 +104,9 @@ public class HTTPBase {
     }
 
     // takes a input hash and stores it in the hash named queries
-    public void input(HashMap h) {
-        queries = new HashMap();
-        for (final Iterator i = h.keySet().iterator(); i.hasNext();) {
+    public void input(HashMap<?, ?> h) {
+        queries = new HashMap<String, String>();
+        for (final Iterator<?> i = h.keySet().iterator(); i.hasNext();) {
             final String key = (String) i.next();
             // check if key is a allowed field
             if (allowed_fields.containsKey(key)) {
@@ -125,7 +124,7 @@ public class HTTPBase {
     }
 
     // returns the output from the server
-    public HashMap output() {
+    public HashMap<String, String> output() {
         return outputstr;
     }
 
@@ -143,7 +142,7 @@ public class HTTPBase {
 
         // build a query string from the hash called queries
         int n = 0;
-        for (final Iterator i = queries.keySet().iterator(); i.hasNext();) {
+        for (final Iterator<String> i = queries.keySet().iterator(); i.hasNext();) {
             // for each element in the hash called queries
             // append the key and the value of the element to the query string
             final String key = (String) i.next();
@@ -172,7 +171,7 @@ public class HTTPBase {
             final org.apache.commons.httpclient.methods.PostMethod method = new PostMethod(
                     url2);
             method.setRequestBody(query_data);
-            final int r = client.executeMethod(method);
+            client.executeMethod(method);
             final BufferedInputStream in = new BufferedInputStream(
                     method.getResponseBodyAsStream());
             final StringBuffer temp = new StringBuffer();
