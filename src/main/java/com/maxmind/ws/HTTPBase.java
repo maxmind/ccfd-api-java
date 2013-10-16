@@ -20,20 +20,25 @@
 
 package com.maxmind.ws;
 
-import java.io.BufferedInputStream;
 import java.io.InterruptedIOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.params.HttpConnectionParams;
-
-//import HttpTimeoutHandler;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
 public class HTTPBase {
+    private final String clientApi = "Java/1.60";
+
     int numservers = 3;
     static String[] server = { "minfraud.maxmind.com",
             "minfraud-us-east.maxmind.com", "minfraud-us-west.maxmind.com" };
@@ -106,8 +111,8 @@ public class HTTPBase {
     // takes a input hash and stores it in the hash named queries
     public void input(HashMap<?, ?> h) {
         queries = new HashMap<String, String>();
-        for (final Iterator<?> i = h.keySet().iterator(); i.hasNext();) {
-            final String key = (String) i.next();
+        for (final Object name : h.keySet()) {
+            final String key = (String) name;
             // check if key is a allowed field
             if (allowed_fields.containsKey(key)) {
                 final String value = (String) h.get(key);
@@ -132,29 +137,17 @@ public class HTTPBase {
     boolean querySingleServer(String server) {
         String scheme, url2;
 
-        final NameValuePair[] query_data = new NameValuePair[queries.size() + 1];
-        // check if we using the Secure HTTPS proctol
-        if (isSecure == true) {
-            scheme = "https://"; // Secure HTTPS proctol
-        } else {
-            scheme = "http://"; // Regular HTTP proctol
-        }
+        // check if we using the Secure HTTPS protocol
+        scheme = isSecure ? "https://" : "http://";
 
-        // build a query string from the hash called queries
-        int n = 0;
-        for (final Iterator<String> i = queries.keySet().iterator(); i.hasNext();) {
-            // for each element in the hash called queries
-            // append the key and the value of the element to the query string
-            final String key = (String) i.next();
-            final String value = (String) queries.get(key);
-            if (debug) {
-                System.out.println("query key " + key + " = " + value);
-            }
-            query_data[n] = new NameValuePair(key, value);
-            n++;
+        ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
+        for (Map.Entry<String, String> entry : queries.entrySet()) {
+            parameters.add(new BasicNameValuePair(entry.getKey(), entry
+                    .getValue()));
         }
-        query_data[n] = new NameValuePair("clientAPI", "Java/1.53");
-        // scheme already has the name of the proctol
+        parameters.add(new BasicNameValuePair("clientAPI", clientApi));
+
+        // scheme already has the name of the protocol
         // append the domain name of the server, url of the web service
         // and the query string to the string named url2
         url2 = scheme + server + "/" + url;
@@ -162,26 +155,20 @@ public class HTTPBase {
             System.out.println("url2 = " + url2);
         }
         try {
-            final HttpClient client = new HttpClient();
-            HttpConnectionParams connectionParams = client.getHttpConnectionManager().getParams();
-            connectionParams.setConnectionTimeout((int) timeout * 1000);
-            connectionParams.setSoTimeout((int) timeout * 1000);
+            final DefaultHttpClient client = new DefaultHttpClient();
+            final HttpParams params = client.getParams();
+            HttpConnectionParams.setConnectionTimeout(params,
+                    (int) timeout * 1000);
+            HttpConnectionParams.setSoTimeout(params, (int) timeout * 1000);
 
             // connect the server
-            final org.apache.commons.httpclient.methods.PostMethod method = new PostMethod(
-                    url2);
-            method.setRequestBody(query_data);
-            client.executeMethod(method);
-            final BufferedInputStream in = new BufferedInputStream(
-                    method.getResponseBodyAsStream());
-            final StringBuffer temp = new StringBuffer();
-            int i = in.read();
-            while (i > -1) {
-                temp.append((char) i);
-                i = in.read();
-            }
-            final String content = temp.toString();
-            if (method.getStatusCode() == 200) {
+            final HttpPost method = new HttpPost(url2);
+            method.setEntity(new UrlEncodedFormEntity(parameters));
+            final HttpResponse response = client.execute(method);
+
+            final String content = EntityUtils.toString(response.getEntity());
+            if (response.getStatusLine().getStatusCode() == 200) {
+
                 if (debug) {
                     System.out.println("content = " + content);
                 }

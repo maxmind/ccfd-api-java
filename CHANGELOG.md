@@ -1,6 +1,6 @@
 # minFraud Java API Change Log
 
-## 1.?? (2013-10-??)
+## 1.60 (2013-10-16)
 
 * Updated code to use generics (Java 1.5+ required).
 * Upgraded to Jakarta Commons HttpClient 3.1.
