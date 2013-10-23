@@ -1,6 +1,6 @@
 # minFraud Java API Change Log
 
-## 1.60 (2013-10-16)
+## 1.60 (2013-10-23)
 
 * Updated code to use generics (Java 1.5+ required).
 * Updated code to use to Apache HttpComponents 4.x.
