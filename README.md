@@ -9,7 +9,7 @@ To do this, add the dependency to your pom.xml:
     <dependency>
         <groupId>com.maxmind.ws</groupId>
         <artifactId>minfraud-api</artifactId>
-        <version>1.60-SNAPSHOT</version>
+        <version>1.60</version>
     </dependency>
 ```
 
