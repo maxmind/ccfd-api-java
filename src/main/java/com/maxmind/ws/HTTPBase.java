@@ -1,21 +1,21 @@
 /**
  * HTTPBase.java
- *
- * Copyright (C) 2005 MaxMind LLC.  All Rights Reserved.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * 
+ * Copyright (C) 2005 MaxMind LLC. All Rights Reserved.
+ * 
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option) any
+ * later version.
+ * 
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
 package com.maxmind.ws;
@@ -134,7 +134,7 @@ public class HTTPBase {
     }
 
     // queries a single server
-    boolean querySingleServer(String server) {
+    boolean querySingleServer(String hostname) {
         String scheme, url2;
 
         // check if we using the Secure HTTPS protocol
@@ -150,7 +150,7 @@ public class HTTPBase {
         // scheme already has the name of the protocol
         // append the domain name of the server, url of the web service
         // and the query string to the string named url2
-        url2 = scheme + server + "/" + url;
+        url2 = scheme + hostname + "/" + url;
         if (debug) {
             System.out.println("url2 = " + url2);
         }
@@ -212,10 +212,9 @@ public class HTTPBase {
                 }
                 method.releaseConnection();
                 return true;
-            } else {
-                method.releaseConnection();
-                return false;
             }
+            method.releaseConnection();
+            return false;
         } catch (final java.io.IOException e) {
             if (e instanceof InterruptedIOException) {
                 System.out.println("web service timeout");

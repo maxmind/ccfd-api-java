@@ -1,5 +1,10 @@
 # minFraud Java API Change Log
 
+## 1.70 (2015-XX-XX)
+
+* Support for the Telephone Verification Service was removed as this service
+  is no longer offered.
+
 ## 1.60 (2013-10-23)
 
 * Updated code to use generics (Java 1.5+ required).

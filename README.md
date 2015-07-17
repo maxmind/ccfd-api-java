@@ -9,7 +9,7 @@ To do this, add the dependency to your pom.xml:
     <dependency>
         <groupId>com.maxmind.ws</groupId>
         <artifactId>minfraud-api</artifactId>
-        <version>1.60</version>
+        <version>1.70</version>
     </dependency>
 ```
 
@@ -19,8 +19,6 @@ HttpComponents](http://hc.apache.org/).
 ## Example programs
 
 * sample/Example.java - how to use the API with minFraud service.
-* sample/Telv_Example.java - using the API with the Telephone Verification
-  service.
 
 ## API Documentation for minFraud service
 
