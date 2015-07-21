@@ -1,9 +1,10 @@
 # minFraud Java API Change Log
 
-## 1.70 (2015-XX-XX)
+## 1.70 (2015-07-21)
 
 * Support for the Telephone Verification Service was removed as this service
   is no longer offered.
+* Minor code cleanup.
 
 ## 1.60 (2013-10-23)
 
