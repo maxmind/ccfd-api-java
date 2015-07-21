@@ -43,8 +43,8 @@ public class HTTPBase {
     static String[] server = { "minfraud.maxmind.com",
             "minfraud-us-east.maxmind.com", "minfraud-us-west.maxmind.com" };
     String url;
-    public HashMap<String, String> queries;
-    public HashMap<String, Integer> allowed_fields;
+    public Map<String, String> queries;
+    public Map<String, Integer> allowed_fields;
     public HashMap<String, String> outputstr;
     public boolean isSecure = true;
     public float timeout = 10; // default timeout is 10 seconds
@@ -101,7 +101,7 @@ public class HTTPBase {
                 System.out.println("queried server = " + server[i]
                         + ", result = " + result);
             }
-            if (result == true) {
+            if (result) {
                 return result;
             }
         }
@@ -109,7 +109,7 @@ public class HTTPBase {
     }
 
     // takes a input hash and stores it in the hash named queries
-    public void input(HashMap<?, ?> h) {
+    public void input(Map<?, ?> h) {
         queries = new HashMap<String, String>();
         for (final Object name : h.keySet()) {
             final String key = (String) name;
@@ -192,11 +192,7 @@ public class HTTPBase {
                     String key;
                     String value;
                     key = st2.nextToken();
-                    if (st2.hasMoreTokens()) {
-                        value = st2.nextToken();
-                    } else {
-                        value = "";
-                    }
+                    value = st2.hasMoreTokens() ? st2.nextToken() : "";
                     // store the key and the value into the
                     // hash named outputstr
                     outputstr.put(key, value);
@@ -205,7 +201,7 @@ public class HTTPBase {
                                 + value);
                     }
                 }
-                if (outputstr.containsKey(check_field) == false) {
+                if (!outputstr.containsKey(check_field)) {
                     // if the output does not have the field it is checking for
                     // then return false
                     return false;

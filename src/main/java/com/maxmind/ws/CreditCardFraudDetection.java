@@ -57,8 +57,8 @@ public class CreditCardFraudDetection extends HTTPBase {
 
     @Override
     protected String filter_field(String key, String value) {
-        if ((key.equals("emailMD5") && value.indexOf('@') != -1)
-                || ((key.equals("usernameMD5") || key.equals("passwordMD5")) && value
+        if (("emailMD5".equals(key) && value.indexOf('@') != -1)
+                || (("usernameMD5".equals(key) || "passwordMD5".equals(key)) && value
                         .length() != 32)) {
             try {
                 final MessageDigest md = MessageDigest.getInstance("MD5");
