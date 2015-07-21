@@ -31,8 +31,8 @@
     </organization>
 
     <scm>
-        <connection>scm:git:git@git.maxmind.com:ccfd-api-java</connection>
-        <developerConnection>scm:git:git@git.maxmind.com:ccfd-api-java</developerConnection>
+        <connection>scm:git@github.com:maxmind/ccfd-api-java.git</connection>
+        <developerConnection>scm:git:git@github.com:maxmind/ccfd-api-java.git</developerConnection>
     </scm>
 
     <properties>
