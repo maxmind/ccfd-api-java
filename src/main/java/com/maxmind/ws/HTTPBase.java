@@ -20,17 +20,27 @@
 
 package com.maxmind.ws;
 
+import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.net.ProxySelector;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.routing.HttpRoutePlanner;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -57,6 +67,11 @@ public class HTTPBase {
     public boolean useDNS = true;
     public long wsIpaddrRefreshTimeout = 18000;
     public String wsIpaddrCacheFile = "/tmp/maxmind.ws.cache";
+
+    boolean useSystemProxies = false;
+
+    String proxyHost = null;
+    int proxyPort = -1;
 
     HTTPBase() {
         queries = new HashMap<String, String>();
@@ -154,16 +169,27 @@ public class HTTPBase {
         if (debug) {
             System.out.println("url2 = " + url2);
         }
+        CloseableHttpClient client = null;
         try {
-            final DefaultHttpClient client = new DefaultHttpClient();
-            final HttpParams params = client.getParams();
-            HttpConnectionParams.setConnectionTimeout(params,
-                    (int) timeout * 1000);
-            HttpConnectionParams.setSoTimeout(params, (int) timeout * 1000);
+            RequestConfig timeoutConfig = RequestConfig.custom().
+                    setConnectionRequestTimeout((int) timeout * 1000).
+                    setSocketTimeout((int) timeout * 1000).build();
+
+            HttpRoutePlanner proxyPlaner = null;
+            if (useSystemProxies) {
+                proxyPlaner = new SystemDefaultRoutePlanner(ProxySelector.getDefault());
+            }
+            if (proxyHost != null && proxyPort > -1) {
+                proxyPlaner = new DefaultProxyRoutePlanner(new HttpHost(proxyHost, proxyPort));
+            }
+            client = HttpClients.custom().
+                    setDefaultRequestConfig(timeoutConfig).
+                    setRoutePlanner(proxyPlaner).build();
 
             // connect the server
             final HttpPost method = new HttpPost(url2);
             method.setEntity(new UrlEncodedFormEntity(parameters));
+
             final HttpResponse response = client.execute(method);
 
             final String content = EntityUtils.toString(response.getEntity());
@@ -217,6 +243,14 @@ public class HTTPBase {
             }
             System.out.println("error = " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            try {
+                if (client != null) {
+                    client.close();
+                }
+            } catch (IOException e) {
+                //ignore
+            }
         }
         return false;
     }

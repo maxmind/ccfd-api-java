@@ -36,23 +36,30 @@ public class CreditCardFraudDetection extends HTTPBase {
             'b', 'c', 'd', 'e', 'f' };
 
     public CreditCardFraudDetection() {
-        url = "app/ccv2r";
-        check_field = "countryMatch";
-        allowed_fields = new HashMap<String, Integer>();
-        for (final String allowedfield : allowedfields) {
-            allowed_fields.put(allowedfield, new Integer(1));
-        }
+        initFields();
         setIsSecure(true);
     }
 
-    public CreditCardFraudDetection(boolean s) {
+    private void initFields() {
         url = "app/ccv2r";
         check_field = "countryMatch";
         allowed_fields = new HashMap<String, Integer>();
         for (final String allowedfield : allowedfields) {
             allowed_fields.put(allowedfield, new Integer(1));
         }
+    }
+
+    public CreditCardFraudDetection(boolean s) {
+        initFields();
         setIsSecure(s);
+    }
+
+    private CreditCardFraudDetection(Builder builder) {
+        initFields();
+        setIsSecure(builder.isSecure);
+        this.proxyHost = builder.proxyHost;
+        this.proxyPort = builder.proxyPort;
+        this.useSystemProxies = builder.systemProxies;
     }
 
     @Override
@@ -75,5 +82,32 @@ public class CreditCardFraudDetection extends HTTPBase {
             }
         }
         return value;
+    }
+
+    public static class Builder {
+        private boolean systemProxies = false;
+        private String proxyHost = null;
+        private int proxyPort = -1;
+        private boolean isSecure = true;
+
+        public Builder() { }
+
+        public Builder useSystemProxies() {
+            systemProxies = true;
+            return this;
+        }
+        public Builder useProxy(String proxyHost, int proxyPort) {
+            this.proxyHost = proxyHost;
+            this.proxyPort = proxyPort;
+            return this;
+        }
+        public CreditCardFraudDetection build() {
+            return new CreditCardFraudDetection(this);
+        }
+
+        public CreditCardFraudDetection buildUnsecure() {
+            this.isSecure = false;
+            return new CreditCardFraudDetection(this);
+        }
     }
 }
