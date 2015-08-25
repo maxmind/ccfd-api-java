@@ -31,6 +31,24 @@ isSecure is false then it uses regular HTTP. if isSecure is true then it uses
 secure HTTPS.
 
 ```java
+ccfb = new CreditCardFraudDetection.Builder()
+```
+
+Additionally you can use the Builder object to create a `CreditCardFraudDetection`
+instance that either uses
+the [JVM settings for proxies](https://docs.oracle.com/javase/8/docs/technotes/guides/net/proxies.html)
+(`useSystemProxies()`) or a custom proxy (specified by hostname and port, e.g. `useProxy("host", 3128)`).
+
+Here is a full example:
+
+```java
+ccfs =  new CreditCardFraudDetection.Builder().
+                useProxy("proxy-host", 6568).
+                build();
+```
+
+
+```java
 ccfs.input(HashMap h);
 ```
 
