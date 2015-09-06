@@ -96,18 +96,19 @@ public class CreditCardFraudDetection extends HTTPBase {
             systemProxies = true;
             return this;
         }
-        public Builder useProxy(String proxyHost, int proxyPort) {
+        public Builder proxy(String proxyHost, int proxyPort) {
             this.proxyHost = proxyHost;
             this.proxyPort = proxyPort;
+            return this;
+        }
+
+        public Builder withoutSecurity() {
+            this.isSecure = false;
             return this;
         }
         public CreditCardFraudDetection build() {
             return new CreditCardFraudDetection(this);
         }
 
-        public CreditCardFraudDetection buildUnsecure() {
-            this.isSecure = false;
-            return new CreditCardFraudDetection(this);
-        }
     }
 }
