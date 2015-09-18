@@ -1,5 +1,9 @@
 # minFraud Java API Change Log
 
+## 1.71 (2015-XX-XX)
+
+* Support for using a proxy server. PR by Markus Perndorfer. GitHub #2.
+
 ## 1.70 (2015-07-21)
 
 * Support for the Telephone Verification Service was removed as this service
