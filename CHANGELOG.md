@@ -1,8 +1,10 @@
 # minFraud Java API Change Log
 
-## 1.71 (2015-XX-XX)
+## 1.80 (2018-10-17)
 
 * Support for using a proxy server. PR by Markus Perndorfer. GitHub #2.
+* Upgrade Apache HttpClient from 4.3 to 4.5.6 as 4.3 has several security
+  vulnerabilities.
 
 ## 1.70 (2015-07-21)
 
