@@ -1,5 +1,10 @@
 # Maxmind minFraud Java API
 
+## Deprecation ##
+
+This library is deprecated. Please use our [minFraud Score, Insights, and
+Factors API](https://github.com/maxmind/minfraud-api-java).
+
 ## Installation ##
 
 We recommend installing this package with [Maven](http://maven.apache.org/).
